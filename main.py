@@ -97,3 +97,4 @@ def batch_process():
 
 if __name__ == "__main__":
     batch_process()
+    print('end')
