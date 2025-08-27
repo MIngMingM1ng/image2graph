@@ -1,0 +1,47 @@
+SubModules:
+  TextDetection:
+    box_thresh: 0.6
+    limit_side_len: 64
+    limit_type: min
+    max_side_limit: 4000
+    #model_dir: models/PP-OCRv5_mobile_det_infer
+    #model_name: PP-OCRv5_mobile_det
+    model_dir:  ./OCR/models/PP-OCRv5_server_det_infer
+    model_name: PP-OCRv5_server_det
+    module_name: text_detection
+    thresh: 0.5
+    #thresh: 0.5
+    #unclip_ratio: 1.0
+    unclip_ratio: 1.2
+  TextLineOrientation:
+    batch_size: 6
+    model_dir: ./OCR/models/PP-LCNet_x1_0_textline_ori_infer
+    model_name:  PP-LCNet_x1_0_textline_ori
+    module_name: textline_orientation
+  TextRecognition:
+    batch_size: 6
+    model_dir: ./OCR/models/PP-OCRv5_mobile_rec_infer
+    #model_dir: models/en_PP-OCRv4_mobile_rec_infer
+    model_name: PP-OCRv5_mobile_rec
+    #model_name: en_PP-OCRv4_mobile_rec
+    module_name: text_recognition
+    score_thresh: 0.25
+    #score_thresh: 0.1
+SubPipelines:
+  DocPreprocessor:
+    SubModules:
+      DocOrientationClassify:
+        model_dir: ./OCR/models/PP-LCNet_x1_0_doc_ori_infer
+        model_name: PP-LCNet_x1_0_doc_ori
+        module_name: doc_text_orientation
+      DocUnwarping:
+        model_dir: ./OCR/models/UVDoc_infer
+        model_name: UVDoc
+        module_name: image_unwarping
+    pipeline_name: doc_preprocessor
+    use_doc_orientation_classify: true
+    use_doc_unwarping: true
+pipeline_name: OCR
+text_type: general
+use_doc_preprocessor: true
+use_textline_orientation: true
